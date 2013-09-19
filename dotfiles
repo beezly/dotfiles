@@ -1,0 +1,47 @@
+pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
+SCRIPTPATH=`pwd`
+popd > /dev/null
+
+. $SCRIPTPATH/useful-functions
+
+param=$1
+
+if [ -x $param ]; then
+
+  # No parameter supplied on the command line so we 
+  # go and do our stuff
+
+  for script in $SCRIPTPATH/[0-9][0-9]-*
+  do 
+    . $script
+  done
+
+  # return if sourced, exit if executed
+
+  if [[ "$BASH_SOURCE" != "$0" ]]; then
+    return 
+  else
+    exit 0
+  fi
+fi
+
+param_lower=${param,,}
+
+if [ "$param_lower" == "install" ]; then
+  # Check profile to see if we're already being run
+  # If we aren't, add ourselves
+  profile_paths=~/.profile ~/.bash_profile
+  grep "^. $SCRIPT_PATH/dotfiles$" $profile_paths >& /dev/null
+  if [ $? -ne 0 ]; 
+    # Didn't find it so we add ourselves to .profile
+    echo ". $SCRIPT_PATH/dotfiles" >> ~/.profile
+  fi
+fi 
+
+if [ "$param_lower" == "update" ]; then
+  # Update ourselves... I assume you have git
+  pushd $SCRIPT_PATH/dotfiles >& /dev/null
+  git update
+  popd >&
+  echo "dotfiles finished updating"
+fi

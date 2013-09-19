@@ -1,0 +1,4 @@
+# Do these on Solaris
+if [ "`uname -s`" == "SunOS" ]; then
+  alias ping="ping -s"
+fi

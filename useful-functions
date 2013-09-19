@@ -1,0 +1,14 @@
+# Checks if a path exists and adds it to $PATH if it's not there already
+
+add_to_path ()
+{
+    if [ -d $PATH ]
+    then
+       return 0
+    fi
+    if [[ "$PATH" =~ (^|:)"$1"(:|$) ]]
+    then
+        return 0
+    fi
+    export PATH=$1:$PATH
+}
