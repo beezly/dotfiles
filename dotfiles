@@ -41,7 +41,7 @@ fi
 if [ "$param_lower" == "update" ]; then
   # Update ourselves... I assume you have git
   pushd $SCRIPT_PATH/dotfiles >& /dev/null
-  git update
+  git pull
   popd >&
   echo "dotfiles finished updating"
 fi
